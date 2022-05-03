@@ -26,7 +26,7 @@ class MovieRepository
      */
     public function all()
     {
-        $movieCollection = Movie::all();
+        $movieCollection = Movie::with('images', 'groupVideos.videos', 'directors', 'actors')->get();
         $this->loadRedis();
         return self::cacheCollection(
             $movieCollection,
@@ -42,7 +42,7 @@ class MovieRepository
      */
     public function get($id)
     {
-        $movie = Movie::find($id);
+        $movie = Movie::with('images', 'groupVideos.videos', 'directors', 'actors')->find($id);
         $this->loadRedis();
         return self::cache(
             $movie,
